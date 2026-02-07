@@ -46,5 +46,6 @@ public class Reservation extends BaseEntity {
     @Builder.Default
     private ReservationStatus status = ReservationStatus.CONFIRMED;
 
-    private int fee;
+    @Builder.Default
+    private int fee = 0;
 }
