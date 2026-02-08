@@ -41,4 +41,6 @@ public class Payment extends BaseEntity {
 
     @Column(unique = true, length = 100)
     private String paymentCode;
+
+    private String tossPaymentKey;
 }

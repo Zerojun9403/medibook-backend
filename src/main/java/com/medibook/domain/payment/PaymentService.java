@@ -71,4 +71,32 @@ public class PaymentService {
         payment.setStatus(PaymentStatus.CANCELLED);
         return PaymentResponseDto.from(payment);
     }
+    @Transactional
+    public PaymentResponseDto createTossPayment(Long patientId, PaymentRequestDto dto, String tossPaymentKey) {
+        User patient = userRepository.findById(patientId)
+                .orElseThrow(() -> new IllegalArgumentException("환자를 찾을 수 없습니다."));
+
+        Reservation reservation = reservationRepository.findById(dto.getReservationId())
+                .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다."));
+
+        if (paymentRepository.findByReservationId(reservation.getId()).isPresent()) {
+            throw new IllegalStateException("이미 결제된 예약입니다.");
+        }
+
+        String code = "PAY-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+
+        Payment payment = Payment.builder()
+                .patient(patient)
+                .reservation(reservation)
+                .amount(dto.getAmount())
+                .method(PaymentMethod.valueOf(dto.getMethod()))
+                .status(PaymentStatus.COMPLETED)
+                .paymentCode(code)
+                .tossPaymentKey(tossPaymentKey)
+                .build();
+
+        payment = paymentRepository.save(payment);
+        return PaymentResponseDto.from(payment);
+    }
+
 }

@@ -26,3 +26,8 @@ jwt:
 
 server:
   port: 8080
+
+toss:
+  payments:
+    client-key: test_ck_LkKEypNArWlEWEbZJXJL8lmeaxYG
+    secret-key: test_sk_nRQoOaPz8LKXGX59QvnGry47BMw6
