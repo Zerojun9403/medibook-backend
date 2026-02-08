@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findByPatientIdOrderByReservationDateDesc(Long patientId);
     List<Reservation> findByDoctorIdAndReservationDate(Long doctorId, LocalDate date);
+    List<Reservation> findByDoctorIdOrderByReservationDateDesc(Long doctorId);
     Optional<Reservation> findByReservationCode(String reservationCode);
     boolean existsByDoctorIdAndReservationDateAndReservationTimeAndStatusNot(
             Long doctorId, LocalDate date, LocalTime time, ReservationStatus status);

@@ -11,6 +11,7 @@ public class ReservationResponseDto {
     private String reservationCode;
     private String patientName;
     private Long doctorId;
+    private Long patientId;
     private String doctorName;
     private String departmentName;
     private String specialty;
@@ -26,6 +27,7 @@ public class ReservationResponseDto {
                 .id(reservation.getId())
                 .reservationCode(reservation.getReservationCode())
                 .patientName(reservation.getPatient().getName())
+                .patientId(reservation.getPatient().getId())
                 .doctorId(reservation.getDoctor().getId())
                 .doctorName(reservation.getDoctor().getUser().getName())
                 .departmentName(reservation.getDoctor().getDepartment().getName())

@@ -46,7 +46,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .phone(request.getPhone())
                 .birthdate(request.getBirthdate())
-                .role(UserRole.PATIENT)
+                .role("doctor".equals(request.getUserType()) ? UserRole.DOCTOR : UserRole.PATIENT)
                 .build();
 
         userRepository.save(user);

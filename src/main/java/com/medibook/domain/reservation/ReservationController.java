@@ -46,7 +46,16 @@ public class ReservationController {
             @RequestParam String date) {
         return ResponseEntity.ok(reservationService.getAvailableSlots(doctorId, date));
     }
-
+    @GetMapping("/doctor")
+    public ResponseEntity<List<ReservationResponseDto>> getDoctorReservations() {
+        Long userId = getCurrentUserId();
+        return ResponseEntity.ok(reservationService.getDoctorReservations(userId));
+    }
+    @PatchMapping("/{id}/complete")
+    public ResponseEntity<ReservationResponseDto> completeReservation(@PathVariable Long id) {
+        Long userId = getCurrentUserId();
+        return ResponseEntity.ok(reservationService.completeReservation(id, userId));
+    }
     private Long getCurrentUserId() {
         return (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }

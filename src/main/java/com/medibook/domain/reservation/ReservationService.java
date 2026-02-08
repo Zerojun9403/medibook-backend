@@ -119,4 +119,32 @@ public class ReservationService {
                 })
                 .toList();
     }
+    public List<ReservationResponseDto> getDoctorReservations(Long userId) {
+        Doctor doctor = doctorRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("의사 정보를 찾을 수 없습니다."));
+
+        return reservationRepository.findByDoctorIdOrderByReservationDateDesc(doctor.getId()).stream()
+                .map(ReservationResponseDto::from)
+                .toList();
+    }
+
+    @Transactional
+    public ReservationResponseDto completeReservation(Long id, Long userId) {
+        Doctor doctor = doctorRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("의사 정보를 찾을 수 없습니다."));
+
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다."));
+
+        if (!reservation.getDoctor().getId().equals(doctor.getId())) {
+            throw new IllegalStateException("본인의 환자만 진료완료 처리할 수 있습니다.");
+        }
+
+        if (reservation.getStatus() == ReservationStatus.CANCELLED) {
+            throw new IllegalStateException("취소된 예약은 완료 처리할 수 없습니다.");
+        }
+
+        reservation.setStatus(ReservationStatus.COMPLETED);
+        return ReservationResponseDto.from(reservation);
+    }
 }
