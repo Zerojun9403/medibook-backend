@@ -1,33 +1,26 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/medibook
-    username: medibook
-    password: medibook1234
+    url: jdbc:postgresql://dpg-d646bnu3jp1c73bhjgt0-a:5432/medibook_db
+    username: medibook_db_user
+    password: 4tTdR2sYnCYX564uUE88bqmodkKPtM8J
     driver-class-name: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-  data:
-    redis:
-      host: localhost
-      port: 6379
-
 jwt:
-  secret: medibook-jwt-secret-key-must-be-at-least-256-bits-long-for-hs256-algorithm
-  access-expiration: 3600000
-  refresh-expiration: 604800000
-
-server:
-  port: 8080
+  secret: medibook-jwt-secret-key-for-production-2026-very-long-string-here
+  access-token-expiration: 3600000
+  refresh-token-expiration: 604800000
 
 toss:
   payments:
     client-key: test_ck_LkKEypNArWlEWEbZJXJL8lmeaxYG
     secret-key: test_sk_nRQoOaPz8LKXGX59QvnGry47BMw6
+
+server:
+  port: 8080
