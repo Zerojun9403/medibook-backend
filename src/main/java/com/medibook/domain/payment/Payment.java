@@ -1,6 +1,7 @@
 package com.medibook.domain.payment;
 
 import com.medibook.domain.reservation.Reservation;
+import com.medibook.domain.user.User;
 import com.medibook.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,8 +18,9 @@ public class Payment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 30)
-    private String paymentCode;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", nullable = false)
+    private User patient;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id", nullable = false)
@@ -27,13 +29,16 @@ public class Payment extends BaseEntity {
     @Column(nullable = false)
     private int amount;
 
-    @Column(length = 30)
-    private String method;
-
-    private String tossPaymentKey;
-
+    @Column(nullable = false, length = 50)
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     @Builder.Default
-    private PaymentStatus status = PaymentStatus.PAID;
+    private PaymentMethod method = PaymentMethod.CARD;
+
+    @Column(nullable = false, length = 50)
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private PaymentStatus status = PaymentStatus.PENDING;
+
+    @Column(unique = true, length = 100)
+    private String paymentCode;
 }
