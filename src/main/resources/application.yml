@@ -14,8 +14,8 @@ spring:
 
 jwt:
   secret: medibook-jwt-secret-key-for-production-2026-very-long-string-here
-  access-token-expiration: 3600000
-  refresh-token-expiration: 604800000
+  access-expiration: 3600000
+  refresh-expiration: 604800000
 
 toss:
   payments:
